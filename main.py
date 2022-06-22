@@ -184,7 +184,7 @@ if __name__ == "__main__":
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler("start", start)],
         states={
-            INITIAL: [],
+            INITIAL: [MessageHandler(filters.TEXT, initial)],
             NAME: [MessageHandler(filters.TEXT, name)],
             MAIL: [MessageHandler(filters.TEXT, mail)],
             THEME: [
