@@ -51,7 +51,7 @@ logging.basicConfig(
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "Привет​​! Напишите все вопросы, а мы ответим на каждый из них ❤️️"
+        "Привет​​! Напишите все вопросы, а мы ответим на каждый из них ❤️️\n"
         "Это может занять от пары минут до нескольких часов, но если мы не застанем вас тут, ответ найдет вас в почте.",
     )
 
@@ -208,11 +208,7 @@ if __name__ == "__main__":
         fallbacks=[CommandHandler("cancel", cancel)],
     )
 
-    start_handler = CommandHandler("start", start)
-    status_handler = CommandHandler("status", status)
-
-    application.add_handler(start_handler)
-    application.add_handler(status_handler)
+    application.add_handler(conv_handler)
 
     application.run_webhook(
         listen="0.0.0.0",
