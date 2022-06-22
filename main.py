@@ -57,11 +57,12 @@ if __name__ == '__main__':
     application.add_handler(status_handler)
     application.add_handler(echo_handler)
 
-    application.start_webhook(
+    application.run_webhook(
         listen="0.0.0.0",
         port=PORT,
         url_path=BOT_TOKEN,
         webhook_url=f"https://{HEROKU_APP_NAME}.herokuapp.com/{BOT_TOKEN}"
     )
 
+    application.bot.set_webhook(f"https://{HEROKU_APP_NAME}.herokuapp.com/{BOT_TOKEN}")
     application.idle()
