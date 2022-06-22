@@ -50,10 +50,14 @@ logging.basicConfig(
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    continue_keyboard = [["Продожить"]]
     await update.message.reply_text(
         "Привет​​! Напишите все вопросы, а мы ответим на каждый из них ❤️️\n"
         "Это может занять от пары минут до нескольких часов, но если мы не застанем вас тут, ответ найдет вас в почте.",
-    )
+    reply_markup=ReplyKeyboardMarkup(
+            continue_keyboard,
+            one_time_keyboard=True,
+        ),)
 
     return INITIAL
 
@@ -188,10 +192,10 @@ if __name__ == "__main__":
             NAME: [MessageHandler(filters.TEXT, name)],
             MAIL: [MessageHandler(filters.TEXT, mail)],
             THEME: [
-                MessageHandler(filters.Regex("^(работать)$"), job),
-                MessageHandler(filters.Regex("^(сотрудничество)$"), cooperate),
-                MessageHandler(filters.Regex("^(статус)$"), pre_status),
-                MessageHandler(filters.Regex("^(другой)$"), other),
+                MessageHandler(filters.Regex("(работать)"), job),
+                MessageHandler(filters.Regex("(сотрудничество)"), cooperate),
+                MessageHandler(filters.Regex("(статус)"), pre_status),
+                MessageHandler(filters.Regex("(другой)"), other),
             ],
             JOB: [],
             COOPERATE: [],
