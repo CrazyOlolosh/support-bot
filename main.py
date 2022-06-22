@@ -36,7 +36,7 @@ async def status(update: Update, context: ContextTypes.DEFAULT_TYPE):
     resp = req.json()
     print(resp)
     try:
-        t_status = resp['ticket']['ststus_id']
+        t_status = resp['ticket']['status_id']
         result = status_list[t_status]
         status_result = f'Текущий статус обращения №{context.args[0]}: {result}.'
     except KeyError:
