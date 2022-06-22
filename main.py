@@ -188,8 +188,8 @@ if __name__ == "__main__":
             OTHER: [MessageHandler(filters.TEXT, other)],
             NEW_TICKET: [],
             HELPFULL: [
-                MessageHandler(filters.Regex("(да)"), bye),
-                MessageHandler(filters.Regex("(нет)"), other),
+                MessageHandler(filters.Regex("(Да)"), bye),
+                MessageHandler(filters.Regex("(Нет)"), other),
             ],
         },
         fallbacks=[CommandHandler("cancel", cancel)],
