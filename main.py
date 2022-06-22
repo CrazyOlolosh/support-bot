@@ -51,7 +51,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def initial(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    await update.message.reply_text(f"Представьтесь пожалуйста")
+    await update.message.reply_text(f"Представьтесь пожалуйста", reply_markup=ReplyKeyboardRemove(),)
 
     return NAME
 
@@ -149,6 +149,20 @@ async def other(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     return NEW_TICKET
 
 
+async def new_ticket(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    input_ticket_text = update.message.text
+    subject = "Новое обращение в боте Telegram"
+    client = context.user_data["name"]
+    mail = context.user_data["mail"]
+    req = requests.post(f'https://api.usedesk.ru/create/ticket?api_token={USEDESK_TOKEN}&subject={subject}&message={input_ticket_text}&client_name={client}&client_email={mail}&tag=telegram&from=client')
+    resp = req.json()
+    print(resp)
+    if resp['ticket_id']:
+        await update.message.reply_text(f"""Большое спасибо за обращение!\nОно зарегистрировано под номером{resp['ticket_id']}.\nМы получили Ваш запрос и ответим Вам в скором времени """, reply_markup=ReplyKeyboardRemove(),)
+
+    return ConversationHandler.END
+
+
 async def bye(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     await update.message.reply_text(
         "Был рад Вам помочь!\n"
@@ -186,7 +200,7 @@ if __name__ == "__main__":
             PRE_STATUS: [MessageHandler(filters.Regex("(\d{8,9})"), pre_status)],
             STATUS: [MessageHandler(filters.TEXT, status)],
             OTHER: [MessageHandler(filters.TEXT, other)],
-            NEW_TICKET: [],
+            NEW_TICKET: [MessageHandler(filters.TEXT, new_ticket)],
             HELPFULL: [
                 MessageHandler(filters.Regex("(Да)"), bye),
                 MessageHandler(filters.Regex("(Нет)"), other),
