@@ -3,7 +3,7 @@ import logging
 from telegram import Update
 from telegram.ext import filters, MessageHandler, ApplicationBuilder, ContextTypes, CommandHandler
 
-from boto.s3.connection import S3Connection
+# from boto.s3.connection import S3Connection
 
 
 # BOT_TOKEN = S3Connection(os.environ['BOT_TOKEN'])
