@@ -6,6 +6,8 @@ import requests
 
 BOT_TOKEN = os.environ.get('BOT_TOKEN')
 USEDESK_TOKEN = os.environ.get('USEDESK_TOKEN')
+PORT = int(os.environ.get('PORT', '8443'))
+HEROKU_APP_NAME = os.getenv("HEROKU_APP_NAME")
 
 status_list = {
     1: 'Открыт',
@@ -30,6 +32,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def status(update: Update, context: ContextTypes.DEFAULT_TYPE):
     req = requests.get(f'https://api.usedesk.ru/ticket?api_token={USEDESK_TOKEN}&ticket_id={context.args}')
+    print(req)
     resp = req.json()
     try:
         t_status = resp['ticket']['ststus_id']
@@ -54,4 +57,11 @@ if __name__ == '__main__':
     application.add_handler(status_handler)
     application.add_handler(echo_handler)
 
-    application.run_polling()
+    application.start_webhook(
+        listen="0.0.0.0",
+        port=PORT,
+        url_path=BOT_TOKEN,
+        webhook_url=f"https://{HEROKU_APP_NAME}.herokuapp.com/{BOT_TOKEN}"
+    )
+
+    application.idle()
