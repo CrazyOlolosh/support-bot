@@ -158,7 +158,7 @@ async def new_ticket(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     resp = req.json()
     print(resp)
     if resp['ticket_id']:
-        await update.message.reply_text(f"""Большое спасибо за обращение!\nОно зарегистрировано под номером{resp['ticket_id']}.\nМы получили Ваш запрос и ответим Вам в скором времени """, reply_markup=ReplyKeyboardRemove(),)
+        await update.message.reply_text(f"""Большое спасибо за обращение!\nОно зарегистрировано под номером {resp['ticket_id']}.\nМы получили Ваш запрос и ответим Вам в скором времени. """, reply_markup=ReplyKeyboardRemove(),)
 
     return ConversationHandler.END
 
