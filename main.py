@@ -33,7 +33,7 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
 )
 
-(INITIAL, NAME, MAIL, THEME, PRE_STATUS, STATUS, OTHER, NEW_TICKET, HELPFULL, BYE) = range(10)
+(INITIAL, NAME, MAIL, THEME, PRE_STATUS, STATUS, OTHER, NEW_TICKET, HELPFULL) = range(10)
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -105,7 +105,10 @@ async def cooperate(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
 
 async def pre_status(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    context.bot.send_message(chat_id=update.effective_chat.id, text=f"""Введите пожалуйста номер Вашего обращения (он указан в письме)""")
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=f"""Введите пожалуйста номер Вашего обращения\n(он указан в письме)""",
+    )
     await update.message.reply_text(
         f"""Введите пожалуйста номер Вашего обращения (он указан в письме)"""
     )
@@ -140,6 +143,15 @@ async def other(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
 async def helpfull(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     help_keyboard = [["Да", "Нет"]]
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=f"""Мой ответ помог Вам?""",
+        reply_markup=ReplyKeyboardMarkup(
+            help_keyboard,
+            one_time_keyboard=True,
+            input_field_placeholder="Выбери вариант",
+        ),
+    )
     await update.message.reply_text(
         f"""Мой ответ помог Вам?""",
         reply_markup=ReplyKeyboardMarkup(
@@ -191,7 +203,7 @@ if __name__ == "__main__":
             HELPFULL: [
                 MessageHandler(filters.Regex("(да)"), bye),
                 MessageHandler(filters.Regex("(нет)"), other),
-            ]
+            ],
         },
         fallbacks=[CommandHandler("cancel", cancel)],
     )
