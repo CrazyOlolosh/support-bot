@@ -6,7 +6,8 @@ from telegram.ext import filters, MessageHandler, ApplicationBuilder, ContextTyp
 from boto.s3.connection import S3Connection
 
 
-BOT_TOKEN = S3Connection(os.environ['BOT_TOKEN'])
+# BOT_TOKEN = S3Connection(os.environ['BOT_TOKEN'])
+BOT_TOKEN = os.environ.get('BOT_TOKEN')
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
