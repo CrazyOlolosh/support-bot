@@ -51,8 +51,7 @@ logging.basicConfig(
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        chat_id=update.effective_chat.id,
-        text="""
+        """
         Привет​​! Напишите все вопросы, а мы ответим на каждый из них ❤️️
         Это может занять от пары минут до нескольких часов, но если мы не застанем вас тут,
         ответ найдет вас в почте.
