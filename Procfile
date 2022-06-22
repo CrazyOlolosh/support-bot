@@ -1,1 +1,1 @@
-web: python main.py --bind :$PORT
+web: python main.py --bind :$PORT --timeout 0
