@@ -32,8 +32,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def status(update: Update, context: ContextTypes.DEFAULT_TYPE):
     req = requests.get(f'https://api.usedesk.ru/ticket?api_token={USEDESK_TOKEN}&ticket_id={context.args}')
-    print(req)
     resp = req.json()
+    print(resp)
     try:
         t_status = resp['ticket']['ststus_id']
         result = status_list[t_status]
