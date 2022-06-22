@@ -85,30 +85,38 @@ async def mail(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
 
 async def job(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    help_keyboard = [["Да", "Нет"]]
     client_name = context.user_data["name"]
     await update.message.reply_text(
         f'Дорогой, {client_name}! Наши вакансии регулярно обновляются и публикуются на официальном сайте https://blackcaviar.games/ в разделе "Вакансии". Вы, также, можете направить Ваше резюме нам на почту job@blackcaviar.games.\n'
-        "Благодарю за интерес, проявленный к нашей компании.😉"
+        "Благодарю за интерес, проявленный к нашей компании.😉\n\n Мой ответ помог Вам?",
+        reply_markup=ReplyKeyboardMarkup(
+            help_keyboard,
+            one_time_keyboard=True,
+            input_field_placeholder="Выбери вариант",
+        ),
     )
 
     return HELPFULL
 
 
 async def cooperate(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    help_keyboard = [["Да", "Нет"]]
     client_name = context.user_data["name"]
     await update.message.reply_text(
         f"Дорогой, {client_name}! По вопросам сотрудничества Вы можете написать нам на почту info@blackcaviar.games.\n"
-        "Благодарю за интерес, проявленный к нашей компании.😉"
+        "Благодарю за интерес, проявленный к нашей компании.😉\n\n Мой ответ помог Вам?",
+        reply_markup=ReplyKeyboardMarkup(
+            help_keyboard,
+            one_time_keyboard=True,
+            input_field_placeholder="Выбери вариант",
+        ),
     )
 
     return HELPFULL
 
 
 async def pre_status(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    context.bot.send_message(
-        chat_id=update.effective_chat.id,
-        text=f"""Введите пожалуйста номер Вашего обращения\n(он указан в письме)""",
-    )
     await update.message.reply_text(
         f"""Введите пожалуйста номер Вашего обращения (он указан в письме)"""
     )
@@ -139,27 +147,6 @@ async def other(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     await update.message.reply_text(f"""Опишите пожалуйста суть Вашего обращения""")
 
     return NEW_TICKET
-
-
-async def helpfull(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    help_keyboard = [["Да", "Нет"]]
-    context.bot.send_message(
-        chat_id=update.effective_chat.id,
-        text=f"""Мой ответ помог Вам?""",
-        reply_markup=ReplyKeyboardMarkup(
-            help_keyboard,
-            one_time_keyboard=True,
-            input_field_placeholder="Выбери вариант",
-        ),
-    )
-    await update.message.reply_text(
-        f"""Мой ответ помог Вам?""",
-        reply_markup=ReplyKeyboardMarkup(
-            help_keyboard,
-            one_time_keyboard=True,
-            input_field_placeholder="Выбери вариант",
-        ),
-    )
 
 
 async def bye(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
