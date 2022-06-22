@@ -31,14 +31,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="Привет, чем могу помочь?")
 
 async def status(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    req = requests.get(f'https://api.usedesk.ru/ticket?api_token={USEDESK_TOKEN}&ticket_id={context.args}')
+    req = requests.get(f'https://api.usedesk.ru/ticket?api_token={USEDESK_TOKEN}&ticket_id={context.args[0]}')
     print(context.args)
     resp = req.json()
     print(resp)
     try:
         t_status = resp['ticket']['ststus_id']
         result = status_list[t_status]
-        status_result = f'Текущий статус обращения №{context.args}: {result}.'
+        status_result = f'Текущий статус обращения №{context.args[0]}: {result}.'
     except KeyError:
         status_result = "Вы ввели неверный номер обращения. Пожалуйста, попробуйте ещё."
     await context.bot.send_message(chat_id=update.effective_chat.id, text=status_result)
