@@ -59,7 +59,7 @@ async def initial(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 async def name(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     input_name = update.message.text
     context.user_data["name"] = input_name
-    await update.message.reply_text(f"Привет, {input_name}! Укажи свой e-mail.")
+    await update.message.reply_text(f"Здравствуйте, {input_name}! Укажите свой e-mail.")
 
     return MAIL
 
@@ -72,12 +72,12 @@ async def mail(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     input_mail = update.message.text
     context.user_data["mail"] = input_mail
     await update.message.reply_text(
-        f"Почта {input_mail} будет использоваться для обратной связи с тобой.\n"
-        "Выбери тему обращения.",
+        f"Почта {input_mail} будет использоваться для обратной связи с Вами.\n"
+        "Выберите тему обращения.",
         reply_markup=ReplyKeyboardMarkup(
             theme_keyboard,
             one_time_keyboard=True,
-            input_field_placeholder="Выбери тему",
+            input_field_placeholder="Выберите тему",
         ),
     )
 
@@ -93,7 +93,7 @@ async def job(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         reply_markup=ReplyKeyboardMarkup(
             help_keyboard,
             one_time_keyboard=True,
-            input_field_placeholder="Выбери вариант",
+            input_field_placeholder="Ответ помог?",
         ),
     )
 
@@ -109,7 +109,7 @@ async def cooperate(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         reply_markup=ReplyKeyboardMarkup(
             help_keyboard,
             one_time_keyboard=True,
-            input_field_placeholder="Выбери вариант",
+            input_field_placeholder="Ответ помог?",
         ),
     )
 
