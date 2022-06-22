@@ -33,20 +33,7 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
 )
 
-(
-    INITIAL,
-    NAME,
-    MAIL,
-    THEME,
-    JOB,
-    COOPERATE,
-    PRE_STATUS,
-    STATUS,
-    OTHER,
-    NEW_TICKET,
-    HELPFULL,
-    BYE,
-) = range(12)
+(INITIAL, NAME, MAIL, THEME, PRE_STATUS, STATUS, OTHER, NEW_TICKET, HELPFULL, BYE) = range(10)
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -54,10 +41,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "Привет​​! Напишите все вопросы, а мы ответим на каждый из них ❤️️\n"
         "Это может занять от пары минут до нескольких часов, но если мы не застанем вас тут, ответ найдет вас в почте.",
-    reply_markup=ReplyKeyboardMarkup(
+        reply_markup=ReplyKeyboardMarkup(
             continue_keyboard,
             one_time_keyboard=True,
-        ),)
+        ),
+    )
 
     return INITIAL
 
@@ -84,7 +72,7 @@ async def mail(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     input_mail = update.message.text
     context.user_data["mail"] = input_mail
     await update.message.reply_text(
-        f"Почта {input_mail} будет использоваться для обратной связи с тобой."
+        f"Почта {input_mail} будет использоваться для обратной связи с тобой.\n"
         "Выбери тему обращения.",
         reply_markup=ReplyKeyboardMarkup(
             theme_keyboard,
@@ -99,7 +87,7 @@ async def mail(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 async def job(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     client_name = context.user_data["name"]
     await update.message.reply_text(
-        f'Дорогой, {client_name}! Наши вакансии регулярно обновляются и публикуются на официальном сайте https://blackcaviar.games/ в разделе "Вакансии". Вы, также, можете направить Ваше резюме нам на почту job@blackcaviar.games.'
+        f'Дорогой, {client_name}! Наши вакансии регулярно обновляются и публикуются на официальном сайте https://blackcaviar.games/ в разделе "Вакансии". Вы, также, можете направить Ваше резюме нам на почту job@blackcaviar.games.\n'
         "Благодарю за интерес, проявленный к нашей компании.😉"
     )
 
@@ -109,7 +97,7 @@ async def job(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 async def cooperate(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     client_name = context.user_data["name"]
     await update.message.reply_text(
-        f"Дорогой, {client_name}! По вопросам сотрудничества Вы можете написать нам на почту info@blackcaviar.games."
+        f"Дорогой, {client_name}! По вопросам сотрудничества Вы можете написать нам на почту info@blackcaviar.games.\n"
         "Благодарю за интерес, проявленный к нашей компании.😉"
     )
 
@@ -117,6 +105,7 @@ async def cooperate(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
 
 async def pre_status(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    context.bot.send_message(chat_id=update.effective_chat.id, text=f"""Введите пожалуйста номер Вашего обращения (он указан в письме)""")
     await update.message.reply_text(
         f"""Введите пожалуйста номер Вашего обращения (он указан в письме)"""
     )
@@ -160,13 +149,11 @@ async def helpfull(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         ),
     )
 
-    return BYE
-
 
 async def bye(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     await update.message.reply_text(
-        "Был рад Вам помочь!"
-        "Если у Вас возникнут еще какие-либо вопросы, пожалуйста свяжитесь с нами в любое удобное для Вас время. Спасибо за обращение."
+        "Был рад Вам помочь!\n"
+        "Если у Вас возникнут еще какие-либо вопросы, пожалуйста свяжитесь с нами в любое удобное для Вас время. Спасибо за обращение.\n"
         "До свидания.",
         reply_markup=ReplyKeyboardRemove(),
     )
@@ -197,17 +184,14 @@ if __name__ == "__main__":
                 MessageHandler(filters.Regex("(статус)"), pre_status),
                 MessageHandler(filters.Regex("(другой)"), other),
             ],
-            JOB: [],
-            COOPERATE: [],
-            PRE_STATUS: [],
+            PRE_STATUS: [MessageHandler(filters.Regex("(\d{8,9})"), pre_status)],
             STATUS: [MessageHandler(filters.TEXT, status)],
             OTHER: [MessageHandler(filters.TEXT, other)],
             NEW_TICKET: [],
             HELPFULL: [
-                MessageHandler(filters.Regex("^(да)$"), bye),
-                MessageHandler(filters.Regex("^(нет)$"), other),
-            ],
-            BYE: [],
+                MessageHandler(filters.Regex("(да)"), bye),
+                MessageHandler(filters.Regex("(нет)"), other),
+            ]
         },
         fallbacks=[CommandHandler("cancel", cancel)],
     )
