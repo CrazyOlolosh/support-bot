@@ -37,13 +37,12 @@ logging.basicConfig(
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    continue_keyboard = [[KeyboardButton("Продожить")]]
+    continue_keyboard = [[InlineKeyboardButton("Продожить", callback_data="Продожить")]]
     await update.message.reply_text(
         "Привет​​! Напишите все вопросы, а мы ответим на каждый из них ❤️️\n"
         "Это может занять от пары минут до нескольких часов, но если мы не застанем вас тут, ответ найдет вас в почте.",
-        reply_markup=ReplyKeyboardMarkup(
+        reply_markup=InlineKeyboardMarkup(
             continue_keyboard,
-            one_time_keyboard=True
         ),
     )
 
@@ -51,7 +50,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def initial(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    await update.message.reply_text(f"Представьтесь пожалуйста", reply_markup=ReplyKeyboardRemove(),)
+    query = update.callback_query
+    await query.answer()
+
+    await update.message.reply_text(f"Представьтесь пожалуйста",)
 
     return NAME
 
