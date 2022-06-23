@@ -87,6 +87,12 @@ async def mail(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     return THEME
 
 
+async def wrong_mail(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    await update.message.reply_text(f"Кажется вы ввели некорректный e-mail адресс, попробуйте ещё раз.")
+
+    return MAIL
+
+
 async def job(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     help_keyboard = [["Да", "Нет"]]
     client_name = context.user_data["name"]
@@ -139,7 +145,7 @@ async def status(update: Update, context: ContextTypes.DEFAULT_TYPE):
         result = status_list[t_status]
         last_update = resp['ticket']['last_updated_at']
         eta = 'Ещё учусь считать 😅'
-        status_result = f"Текущий статус обращения №{input_ticket}: {result}.\nПоследнее обновление: {last_update}\nОжидаемое решение: {eta}"
+        status_result = f"Текущий статус обращения №{input_ticket}: {result}.\nПоследнее обновление: {last_update[:16]}\nОжидаемое решение: {eta}"
         await context.bot.send_message(chat_id=update.effective_chat.id, text=status_result)
 
         return HELPFULL
@@ -195,7 +201,7 @@ if __name__ == "__main__":
         states={
             INITIAL: [CallbackQueryHandler(initial)],
             NAME: [MessageHandler(filters.TEXT, name), CommandHandler("cancel", cancel)],
-            MAIL: [MessageHandler(filters.TEXT, mail), CommandHandler("cancel", cancel)],
+            MAIL: [MessageHandler(filters.Regex(r'^([\w-\.]+@([\w-]+\.)+[\w-]{2,10})$'), mail), MessageHandler(filters.TEXT, wrong_mail), CommandHandler("cancel", cancel)],
             THEME: [
                 MessageHandler(filters.Regex("(работать)"), job),
                 MessageHandler(filters.Regex("(сотрудничество)"), cooperate),
@@ -203,7 +209,7 @@ if __name__ == "__main__":
                 MessageHandler(filters.Regex("(другой)"), other),
                 CommandHandler("cancel", cancel)
             ],
-            PRE_STATUS: [MessageHandler(filters.Regex("(\d{8,9})"), pre_status), CommandHandler("cancel", cancel)],
+            PRE_STATUS: [MessageHandler(filters.Regex(r"(\d{8,9})"), pre_status), CommandHandler("cancel", cancel)],
             STATUS: [MessageHandler(filters.TEXT, status), CommandHandler("cancel", cancel)],
             OTHER: [MessageHandler(filters.TEXT, other), CommandHandler("cancel", cancel)],
             NEW_TICKET: [MessageHandler(filters.TEXT, new_ticket), CommandHandler("cancel", cancel)],
