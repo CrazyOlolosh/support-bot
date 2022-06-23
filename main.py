@@ -41,7 +41,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "Привет​​! Напишите все вопросы, а мы ответим на каждый из них ❤️️\n"
         "Это может занять от пары минут до нескольких часов, но если мы не застанем вас тут, ответ найдет вас в почте.",
-        reply_markup=InlineKeyboardMarkup(
+        reply_markup=ReplyKeyboardMarkup(
             continue_keyboard,
             one_time_keyboard=True
         ),
