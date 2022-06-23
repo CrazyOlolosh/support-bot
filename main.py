@@ -1,6 +1,6 @@
 import os
 import logging
-from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton
+from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, WebAppInfo
 from telegram.ext import (
     filters,
     MessageHandler,
@@ -11,6 +11,7 @@ from telegram.ext import (
     CallbackQueryHandler,
 )
 import requests
+import json
 
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 USEDESK_TOKEN = os.environ.get("USEDESK_TOKEN")
@@ -193,6 +194,28 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     return ConversationHandler.END
 
 
+async def test_webapp(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Send a message with a button that opens a the web app."""
+    await update.message.reply_text(
+        "Please press the button below to choose a color via the WebApp.",
+        reply_markup=ReplyKeyboardMarkup.from_button(
+            KeyboardButton(
+                text="Open webapp!",
+                web_app=WebAppInfo(url="https://bcg-hub.herokuapp.com/"),
+            )
+        ),
+    )
+
+
+async def web_app_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    data = json.loads(update.effective_message.web_app_data.data)
+    await update.message.reply_html(
+        text=f"You selected the color with the HEX value <code>{data['test']}</code>. The "
+        f"corresponding RGB value is <code>{data['rgb']}</code>.",
+        reply_markup=ReplyKeyboardRemove(),
+    )
+
+
 if __name__ == "__main__":
     application = Application.builder().token(BOT_TOKEN).build()
 
@@ -223,6 +246,8 @@ if __name__ == "__main__":
     )
 
     application.add_handler(conv_handler)
+    application.add_handler(CommandHandler("test_webapp", test_webapp))
+    application.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, web_app_data))
 
     application.run_webhook(
         listen="0.0.0.0",
