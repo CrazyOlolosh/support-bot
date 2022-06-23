@@ -59,7 +59,7 @@ async def initial(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 async def name(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     input_name = update.message.text
     context.user_data["name"] = input_name
-    await update.message.reply_text(f"Здравствуйте, {input_name}! Укажите свой e-mail.")
+    await update.message.reply_text(f"Здравствуйте, {input_name}! Укажите свой e-mail.", reply_markup=ReplyKeyboardRemove())
 
     return MAIL
 
@@ -118,7 +118,7 @@ async def cooperate(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
 async def pre_status(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     await update.message.reply_text(
-        f"""Введите пожалуйста номер Вашего обращения (он указан в письме)"""
+        f"""Введите пожалуйста номер Вашего обращения (он указан в письме)""", reply_markup=ReplyKeyboardRemove()
     )
 
     return STATUS
@@ -144,7 +144,7 @@ async def status(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def other(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    await update.message.reply_text(f"""Опишите пожалуйста суть Вашего обращения""")
+    await update.message.reply_text(f"""Опишите пожалуйста суть Вашего обращения""", reply_markup=ReplyKeyboardRemove())
 
     return NEW_TICKET
 
@@ -158,7 +158,7 @@ async def new_ticket(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     resp = req.json()
     print(resp)
     if resp['ticket_id']:
-        await update.message.reply_text(f"""Большое спасибо за обращение!\nОно зарегистрировано под номером {resp['ticket_id']}.\nМы получили Ваш запрос и ответим Вам в скором времени. """, reply_markup=ReplyKeyboardRemove(),)
+        await update.message.reply_text(f"""Большое спасибо за обращение!\nОно зарегистрировано под номером {resp['ticket_id']}.\nМы получили Ваш запрос и ответим Вам в скором времени. """,)
 
     return ConversationHandler.END
 
