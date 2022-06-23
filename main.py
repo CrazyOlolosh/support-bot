@@ -179,7 +179,7 @@ async def bye(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         "Был рад Вам помочь!\n"
         "Если у Вас возникнут еще какие-либо вопросы, пожалуйста свяжитесь с нами в любое удобное для Вас время. Спасибо за обращение.\n"
         "До свидания.",
-        reply_markup=ReplyKeyboardRemove(),
+        reply_markup=ReplyKeyboardRemove(remove_keyboard=True),
     )
 
     return ConversationHandler.END
