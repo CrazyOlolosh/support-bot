@@ -200,8 +200,8 @@ if __name__ == "__main__":
         entry_points=[CommandHandler("start", start)],
         states={
             INITIAL: [CallbackQueryHandler(initial)],
-            NAME: [MessageHandler(filters.TEXT, name), CommandHandler("cancel", cancel)],
-            MAIL: [MessageHandler(filters.Regex(r'^([\w-\.]+@([\w-]+\.)+[\w-]{2,10})$'), mail), MessageHandler(filters.TEXT, wrong_mail), CommandHandler("cancel", cancel)],
+            NAME: [CommandHandler("cancel", cancel), MessageHandler(filters.TEXT, name)],
+            MAIL: [CommandHandler("cancel", cancel), MessageHandler(filters.Regex(r'^([\w-\.]+@([\w-]+\.)+[\w-]{2,10})$'), mail), MessageHandler(filters.TEXT, wrong_mail)],
             THEME: [
                 MessageHandler(filters.Regex("(работать)"), job),
                 MessageHandler(filters.Regex("(сотрудничество)"), cooperate),
@@ -214,9 +214,9 @@ if __name__ == "__main__":
             OTHER: [MessageHandler(filters.TEXT, other), CommandHandler("cancel", cancel)],
             NEW_TICKET: [MessageHandler(filters.TEXT, new_ticket), CommandHandler("cancel", cancel)],
             HELPFULL: [
+                CommandHandler("cancel", cancel),
                 MessageHandler(filters.Regex("(Да)"), bye),
                 MessageHandler(filters.Regex("(Нет)"), other),
-                CommandHandler("cancel", cancel),
             ],
         },
         fallbacks=[CommandHandler("cancel", cancel)],
