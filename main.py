@@ -8,6 +8,7 @@ from telegram.ext import (
     ContextTypes,
     CommandHandler,
     ConversationHandler,
+    CallbackQueryHandler,
 )
 import requests
 
@@ -190,7 +191,7 @@ if __name__ == "__main__":
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler("start", start)],
         states={
-            INITIAL: [MessageHandler(filters.TEXT, initial)],
+            INITIAL: [CallbackQueryHandler(initial)],
             NAME: [MessageHandler(filters.TEXT, name)],
             MAIL: [MessageHandler(filters.TEXT, mail)],
             THEME: [
