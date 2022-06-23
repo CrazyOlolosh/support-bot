@@ -1,6 +1,6 @@
 import os
 import logging
-from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton
 from telegram.ext import (
     filters,
     MessageHandler,
@@ -37,12 +37,13 @@ logging.basicConfig(
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    continue_keyboard = [[InlineKeyboardButton("Продожить")]]
+    continue_keyboard = [[KeyboardButton("Продожить")]]
     await update.message.reply_text(
         "Привет​​! Напишите все вопросы, а мы ответим на каждый из них ❤️️\n"
         "Это может занять от пары минут до нескольких часов, но если мы не застанем вас тут, ответ найдет вас в почте.",
         reply_markup=InlineKeyboardMarkup(
-            continue_keyboard
+            continue_keyboard,
+            one_time_keyboard=True
         ),
     )
 
