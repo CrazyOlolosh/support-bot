@@ -1,6 +1,6 @@
 import os
 import logging
-from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove
+from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     filters,
     MessageHandler,
@@ -41,9 +41,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "Привет​​! Напишите все вопросы, а мы ответим на каждый из них ❤️️\n"
         "Это может занять от пары минут до нескольких часов, но если мы не застанем вас тут, ответ найдет вас в почте.",
-        reply_markup=ReplyKeyboardMarkup(
-            continue_keyboard,
-            one_time_keyboard=True,
+        reply_markup=InlineKeyboardMarkup(
+            continue_keyboard
         ),
     )
 
@@ -135,13 +134,12 @@ async def status(update: Update, context: ContextTypes.DEFAULT_TYPE):
         t_status = resp["ticket"]["status_id"]
         result = status_list[t_status]
         status_result = f"Текущий статус обращения №{input_ticket}: {result}."
+        await context.bot.send_message(chat_id=update.effective_chat.id, text=status_result)
+
+        return HELPFULL
     except KeyError:
         status_result = "Вы ввели неверный номер обращения. Пожалуйста, попробуйте ещё."
         await context.bot.send_message(chat_id=update.effective_chat.id, text=status_result)
-        return PRE_STATUS
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=status_result)
-
-    return HELPFULL
 
 
 async def other(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
