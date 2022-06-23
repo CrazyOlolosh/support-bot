@@ -137,6 +137,7 @@ async def status(update: Update, context: ContextTypes.DEFAULT_TYPE):
         status_result = f"Текущий статус обращения №{input_ticket}: {result}."
     except KeyError:
         status_result = "Вы ввели неверный номер обращения. Пожалуйста, попробуйте ещё."
+        await context.bot.send_message(chat_id=update.effective_chat.id, text=status_result)
         return PRE_STATUS
     await context.bot.send_message(chat_id=update.effective_chat.id, text=status_result)
 
