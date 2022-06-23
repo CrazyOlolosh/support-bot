@@ -54,7 +54,7 @@ async def initial(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     query = update.callback_query
     await query.answer()
 
-    await update.message.reply_text(f"Представьтесь пожалуйста",)
+    await query.edit_message_text(f"Представьтесь пожалуйста",)
 
     return NAME
 
