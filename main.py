@@ -137,7 +137,9 @@ async def status(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         t_status = resp["ticket"]["status_id"]
         result = status_list[t_status]
-        status_result = f"Текущий статус обращения №{input_ticket}: {result}."
+        last_update = resp['ticket']['last_updated_at']
+        eta = 'Ещё учусь считать 😅'
+        status_result = f"Текущий статус обращения №{input_ticket}: {result}.\nПоследнее обновление: {last_update}\nОжидаемое решение: {eta}"
         await context.bot.send_message(chat_id=update.effective_chat.id, text=status_result)
 
         return HELPFULL
