@@ -37,7 +37,7 @@ logging.basicConfig(
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    continue_keyboard = [["Продожить"]]
+    continue_keyboard = [[InlineKeyboardButton("Продожить", callback_data="1")]]
     await update.message.reply_text(
         "Привет​​! Напишите все вопросы, а мы ответим на каждый из них ❤️️\n"
         "Это может занять от пары минут до нескольких часов, но если мы не застанем вас тут, ответ найдет вас в почте.",
