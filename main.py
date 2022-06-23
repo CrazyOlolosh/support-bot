@@ -201,7 +201,7 @@ if __name__ == "__main__":
         states={
             INITIAL: [CallbackQueryHandler(initial)],
             NAME: [CommandHandler("cancel", cancel), MessageHandler(filters.TEXT, name)],
-            MAIL: [CommandHandler("cancel", cancel), MessageHandler(filters.Regex(r'^([\w-\.]+@([\w-]+\.)+[\w-]{2,10})$'), mail), MessageHandler(filters.TEXT, wrong_mail)],
+            MAIL: [CommandHandler("cancel", cancel), MessageHandler(filters.Regex(r'^([\w\-\.]+@([\w\-]+\.)+[\w\-]{2,10})$'), mail), MessageHandler(filters.TEXT, wrong_mail)],
             THEME: [
                 MessageHandler(filters.Regex("(работать)"), job),
                 MessageHandler(filters.Regex("(сотрудничество)"), cooperate),
